@@ -1,10 +1,4 @@
-var LightsOut = function() {
-    /*this.width = 800;
-    this.height = 480;
-    this.maxRandomLights = 15;
-    this.hasWon = false;
-    this.lights = [];*/
-};
+var LightsOut = function() {};
 
 LightsOut.prototype = {
     width: 800,
