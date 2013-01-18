@@ -3,7 +3,7 @@
 <head>
     <title>LightsOut</title>
     <meta name="description" content="A simple lights out clone.">
-    <meta name="keywords" content="HTML5, Javascript, jQuery, Game, Lights Out, Pär Arvidsson">
+    <meta name="keywords" content="HTML5, Javascript, Game, Lights Out, Pär Arvidsson">
     <meta name="author" content="Pär Arvidsson">
     <meta charset="utf-8">
     <style type="text/css">
@@ -22,11 +22,11 @@
             height: 100%;
         }
     </style>
-    <script src="jquery.js"></script>
     <script src="LightsOut.js"></script>
     <script>
-        $(function() {
-            var g = LightsOut;
+        function main() {
+            window.game = new LightsOut();
+            var g = window.game;
             g.init();
             window.canvas = document.getElementById("theCanvas");
             window.scaleFactor = Math.min(window.innerWidth / g.width, window.innerHeight / g.height);
@@ -41,17 +41,18 @@
                 g.update(window.context, x, y);
             }, false);
             g.render(window.context);
-        });
+        };
 
-        $(window).resize(function() {
+        window.onresize = function() {
+            var g = window.game;
             window.scaleFactor = Math.min(window.innerWidth / g.width, window.innerHeight / g.height);
             window.canvas.width = Math.floor(g.width * window.scaleFactor);
             window.canvas.height = Math.floor(g.height * window.scaleFactor);
             g.render(window.context);
-        });
+        };
     </script>
  </head>
- <body>
+ <body onload="main()">
     <canvas id="theCanvas"></canvas>
  </body>
  </html>

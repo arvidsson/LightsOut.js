@@ -1,4 +1,12 @@
-var LightsOut = {
+var LightsOut = function() {
+    /*this.width = 800;
+    this.height = 480;
+    this.maxRandomLights = 15;
+    this.hasWon = false;
+    this.lights = [];*/
+};
+
+LightsOut.prototype = {
     width: 800,
     height: 480,
     maxRandomLights: 15,
@@ -142,4 +150,4 @@ var LightsOut = {
         
         context.restore();
     }
-}
+};
