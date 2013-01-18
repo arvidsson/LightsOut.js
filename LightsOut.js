@@ -1,4 +1,4 @@
-var LightsOut = function() {
+function LightsOut() {
     this.width = 800;
     this.height = 480;
     this.maxRandomLights = 15;
