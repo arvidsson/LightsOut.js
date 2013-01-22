@@ -24,31 +24,8 @@
     </style>
     <script src="LightsOut.js"></script>
     <script>
-        function main() {
-            window.game = new LightsOut();
-            var g = window.game;
-            g.init();
-            window.canvas = document.getElementById("theCanvas");
-            window.scaleFactor = Math.min(window.innerWidth / g.width, window.innerHeight / g.height);
-            window.canvas.width = Math.floor(g.width * window.scaleFactor);
-            window.canvas.height = Math.floor(g.height * window.scaleFactor);
-            window.context = canvas.getContext("2d");
-            window.canvas.addEventListener('click', function(e) {
-                // translate mouse coordinates to canvas resolution before we pass them along
-                var rect = window.canvas.getBoundingClientRect();
-                var x = (e.clientX - rect.left) / (window.innerWidth / g.width);
-                var y = (e.clientY - rect.top) / (window.innerHeight / g.height);
-                g.update(window.context, x, y);
-            }, false);
-            g.render(window.context);
-        };
-
-        window.onresize = function() {
-            var g = window.game;
-            window.scaleFactor = Math.min(window.innerWidth / g.width, window.innerHeight / g.height);
-            window.canvas.width = Math.floor(g.width * window.scaleFactor);
-            window.canvas.height = Math.floor(g.height * window.scaleFactor);
-            g.render(window.context);
+        var main = function() {
+            game.init();
         };
     </script>
  </head>
