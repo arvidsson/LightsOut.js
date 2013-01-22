@@ -1,41 +1,30 @@
-(function(g, undefined) {
+(function(game) {
   
-  var width = 800,
-      height = 480,
-      scalef = 1.0,
-      maxRandomLights = 15,
+  var maxRandomLights = 15,
       hasWon = false,
       lights = [];
   
-  g.init = function() {
+  game.play = function() {
+    game.init();
+    
+    window.canvas.addEventListener('click', function(e) {
+      // translate mouse coordinates to canvas resolution before we pass them along
+      var rect = window.canvas.getBoundingClientRect();
+      var x = (e.clientX - rect.left) / window.scalef;
+      var y = (e.clientY - rect.top) / window.scalef;
+      game.update(x, y);
+    }, false);
+  
     lights = new Array(5);
     for (i = 0; i < 5; i++) {
       lights[i] = new Array(5);
         for (j = 0; j < 5; j++)
           lights[i][j] = false;
     }
+    
     reset();
     
-    window.onresize = function() {
-      scalef = Math.min(window.innerWidth / width, window.innerHeight / height);
-      window.canvas.width = Math.floor(width * scalef);
-      window.canvas.height = Math.floor(height * scalef);
-      g.render(window.context);
-    };
-    
-    window.canvas = document.getElementById("theCanvas");
-    scalef = Math.min(window.innerWidth / width, window.innerHeight / height);
-    window.canvas.width = Math.floor(width * scalef);
-    window.canvas.height = Math.floor(height * scalef);
-    window.context = canvas.getContext("2d");
-    window.canvas.addEventListener('click', function(e) {
-      // translate mouse coordinates to canvas resolution before we pass them along
-      var rect = window.canvas.getBoundingClientRect();
-      var x = (e.clientX - rect.left) / (window.innerWidth / width);
-      var y = (e.clientY - rect.top) / (window.innerHeight / height);
-      g.update(window.context, x, y);
-    }, false);
-    g.render(window.context);
+    game.render();
   };
   
   var reset = function() {
@@ -82,12 +71,12 @@
     return true;
   };
   
-  g.update = function(context, mouseX, mouseY) {
+  game.update = function(mouseX, mouseY) {
     // check if we have won, so we can display a congratulatory message
     if (hasWon) {
       hasWon = false;
       reset();
-      return g.render(context);
+      return game.render();
     }
         
     // find out which light we have clicked on
@@ -126,20 +115,10 @@
     if (total < 1)
       hasWon = true;
         
-    g.render(context);
+    game.render();
   };
     
-  g.render = function(context) {
-    context.save();
-    context.scale(scalef, scalef);
-  
-    // clear the screen
-    context.beginPath();
-    context.rect(0, 0, width, height);
-    context.translate(0, 0);
-    context.fillStyle = "rgb(0,0,0)";
-    context.fill();
-
+  game.draw = function() {
     // draw the lights
     for (i = 0; i < 5; i++) {
       for (j = 0; j < 5; j++) {
@@ -158,8 +137,6 @@
       context.textBaseline = 'bottom';
       context.fillText('You win!', 367, 75);
     }
-    
-    context.restore();
   };
 
 }(window.game = window.game || {}));
