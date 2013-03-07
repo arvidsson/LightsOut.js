@@ -1,38 +1,37 @@
-(function(game) {
-
-  var width = 800,
-      height = 480,
-      scalef = 1.0;
+var game = (function(game) {
   
   var resize = function() {
-    scalef = Math.min(window.innerWidth / width, window.innerHeight / height);
-    window.canvas.width = Math.floor(width * scalef);
-    window.canvas.height = Math.floor(height * scalef);
-    document.getElementById("theCanvas").style.left = ((window.innerWidth - window.canvas.width) / 2) + 'px';
-    document.getElementById("theCanvas").style.top = ((window.innerHeight - window.canvas.height) / 2) + 'px';
+    game.scalef = Math.min(window.innerWidth / game.width, window.innerHeight / game.height);
+    canvas.width = Math.floor(game.width * game.scalef);
+    canvas.height = Math.floor(game.height * game.scalef);
+    document.getElementById("theCanvas").style.left = ((window.innerWidth - canvas.width) / 2) + 'px';
+    document.getElementById("theCanvas").style.top = ((window.innerHeight - canvas.height) / 2) + 'px';
   };
   
-  game.init = function() {
-    window.canvas = document.getElementById("theCanvas");
-    resize();
-    window.context = canvas.getContext("2d");
-    window.width = width;
-    window.height = height;
-    window.scalef = scalef;
+  return {
+    width: 800,
+    height: 480,
+    scalef: 1.0,
     
-    window.onresize = function() {
+    init: function() {
+      window.canvas = document.getElementById("theCanvas");
+      window.context = canvas.getContext("2d");
       resize();
-      game.render();
-    };
+      
+      window.onresize = function() {
+        resize();
+        game.render();
+      };
+    },
+    
+    render: function() {
+      context.save();
+      context.scale(game.scalef, game.scalef);
+      context.fillStyle = "rgb(0,0,0)";
+      context.fillRect(0, 0, game.width, game.height);
+      game.draw();
+      context.restore();
+    }
   };
-  
-  game.render = function() {
-    context.save();
-    context.scale(scalef, scalef);
-    context.fillStyle = "rgb(0,0,0)";
-    context.fillRect(0, 0, width, height);
-    game.draw();
-    context.restore();
-  }
 
 }(window.game = window.game || {}));

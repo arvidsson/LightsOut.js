@@ -1,31 +1,8 @@
-(function(game) {
+var game = (function(game) {
   
   var maxRandomLights = 15,
       hasWon = false,
       lights = [];
-  
-  game.play = function() {
-    game.init();
-    
-    window.canvas.addEventListener('click', function(e) {
-      // translate mouse coordinates to canvas resolution before we pass them along
-      var rect = window.canvas.getBoundingClientRect();
-      var x = (e.clientX - rect.left) / window.scalef;
-      var y = (e.clientY - rect.top) / window.scalef;
-      game.update(x, y);
-    }, false);
-  
-    lights = new Array(5);
-    for (i = 0; i < 5; i++) {
-      lights[i] = new Array(5);
-        for (j = 0; j < 5; j++)
-          lights[i][j] = false;
-    }
-    
-    reset();
-    
-    game.render();
-  };
   
   var reset = function() {
     do {
@@ -71,71 +48,95 @@
     return true;
   };
   
-  game.update = function(mouseX, mouseY) {
-    // check if we have won, so we can display a congratulatory message
-    if (hasWon) {
-      hasWon = false;
+  return {
+    play: function() {
+      game.init();
+      
+      canvas.addEventListener('click', function(e) {
+        // translate mouse coordinates to canvas resolution before we pass them along
+        var rect = canvas.getBoundingClientRect();
+        var x = (e.clientX - rect.left) / game.scalef;
+        var y = (e.clientY - rect.top) / game.scalef;
+        game.update(x, y);
+      }, false);
+    
+      lights = new Array(5);
+      for (i = 0; i < 5; i++) {
+        lights[i] = new Array(5);
+        for (j = 0; j < 5; j++)
+          lights[i][j] = false;
+      }
+      
       reset();
-      return game.render();
-    }
-        
-    // find out which light we have clicked on
-    var x = -1;
-    var y = -1;
-    for (i = 0; i < 5; i++) {
-      for (j = 0; j < 5; j++) {
-        var mx = j * 55 + 265;
-        var my = i * 55 + 105;
-        if (mouseX > mx && mouseX < (mx + 50) && mouseY > my && mouseY < (my + 50)) {
-          x = j;
-          y = i;
+      game.render();
+    },
+    
+    update: function(mouseX, mouseY) {
+      // check if we have won, so we can display a congratulatory message
+      if (hasWon) {
+        hasWon = false;
+        reset();
+        return game.render();
+      }
+          
+      // find out which light we have clicked on
+      var x = -1;
+      var y = -1;
+      for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+          var mx = j * 55 + 265;
+          var my = i * 55 + 105;
+          if (mouseX > mx && mouseX < (mx + 50) && mouseY > my && mouseY < (my + 50)) {
+            x = j;
+            y = i;
+          }
         }
       }
-    }
-    
-    // toggle lights
-    if (x != -1 && y != -1) {
-      lights[y][x] = !lights[y][x];
-      if (x > 0)
-        lights[y][x-1] = !lights[y][x-1]; // toggle left
-      if (x < 4)
-        lights[y][x+1] = !lights[y][x+1]; // toggle right
-      if (y > 0)
-        lights[y-1][x] = !lights[y-1][x]; // toggle above
-      if (y < 4)
-        lights[y+1][x] = !lights[y+1][x]; // toggle below
-    }
-        
-    // check for win!
-    var total = 0;
-    for (i = 0; i < 5; i++)
-      for (j = 0; j < 5; j++)
-        if (lights[i][j])
-          total++;
-    if (total < 1)
-      hasWon = true;
-        
-    game.render();
-  };
-    
-  game.draw = function() {
-    // draw the lights
-    for (i = 0; i < 5; i++) {
-      for (j = 0; j < 5; j++) {
-        var x = j * 55 + 265;
-        var y = i * 55 + 105;
-        context.fillStyle = "rgb(65, 65, 65)";
-        if (lights[i][j])
-          context.fillStyle = "rgb(255, 255, 255)";
-        context.fillRect(x, y, 50, 50);
-      }
-    }
       
-    if (hasWon) {
-      context.fillStyle = '#fff';
-      context.font = 'normal bold 16px sans-serif';
-      context.textBaseline = 'bottom';
-      context.fillText('You win!', 367, 75);
+      // toggle lights
+      if (x != -1 && y != -1) {
+        lights[y][x] = !lights[y][x];
+        if (x > 0)
+          lights[y][x-1] = !lights[y][x-1]; // toggle left
+        if (x < 4)
+          lights[y][x+1] = !lights[y][x+1]; // toggle right
+        if (y > 0)
+          lights[y-1][x] = !lights[y-1][x]; // toggle above
+        if (y < 4)
+          lights[y+1][x] = !lights[y+1][x]; // toggle below
+      }
+          
+      // check for win!
+      var total = 0;
+      for (i = 0; i < 5; i++)
+        for (j = 0; j < 5; j++)
+          if (lights[i][j])
+            total++;
+      if (total < 1)
+        hasWon = true;
+          
+      game.render();
+    },
+      
+    draw: function() {
+      // draw the lights
+      for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+          var x = j * 55 + 265;
+          var y = i * 55 + 105;
+          context.fillStyle = "rgb(65, 65, 65)";
+          if (lights[i][j])
+            context.fillStyle = "rgb(255, 255, 255)";
+          context.fillRect(x, y, 50, 50);
+        }
+      }
+        
+      if (hasWon) {
+        context.fillStyle = '#fff';
+        context.font = 'normal bold 16px sans-serif';
+        context.textBaseline = 'bottom';
+        context.fillText('You win!', 367, 75);
+      }
     }
   };
 
