@@ -1,29 +1,28 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>LightsOut</title>
-  <meta name="description" content="A simple lights out clone.">
-  <meta name="keywords" content="HTML5, Javascript, Game, Lights Out, Pär Arvidsson">
-  <meta name="author" content="Pär Arvidsson">
-  <meta charset="utf-8">
-  <style type="text/css">
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: #000;
-    }
-
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-  </style>
-  <script src="Game.js"></script>
-  <script src="LightsOut.js"></script>
- </head>
- <body onload="window.game.play()">
-  <canvas id="theCanvas"></canvas>
- </body>
- </html>
- 
+    <title>LightsOut.js</title>
+    <meta name="description" content="A simple lights out clone.">
+    <meta name="keywords" content="HTML5, Javascript, Game, Lights Out, PÃ¤r Arvidsson">
+    <meta name="author" content="PÃ¤r Arvidsson">
+    <meta charset="utf-8">
+    <style type="text/css">
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+        }
+        
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+    <script src="Board.js"></script>
+    <script src="App.js"></script>
+</head>
+<body onload="new App(800, 640).init()">
+    <canvas id="mainCanvas"></canvas>
+</body>
+</html>
